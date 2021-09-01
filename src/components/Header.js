@@ -3,6 +3,7 @@ import {auth, provider} from "../firebase";
 const Header = () => {
   // enable google auth
   const handleAuth = () => {
+    console.log("Click");
     auth
       .signInWithPopup(provider)
       .then((result) => {
@@ -44,7 +45,7 @@ const Header = () => {
           <span>SERIES</span>
         </a>
       </NavMenu>
-      <Login onChange={handleAuth}>Login</Login>
+      <Login onClick={handleAuth}>Login</Login>
     </Nav>
   );
 };
