@@ -1,6 +1,18 @@
 import styled from "styled-components";
-
+import {auth, provider} from "../firebase";
 const Header = () => {
+  // enable google auth
+  const handleAuth = () => {
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   return (
     <Nav>
       <Logo>
@@ -9,41 +21,30 @@ const Header = () => {
       <NavMenu>
         <a href="/home">
           <img src="/images/home-icon.svg" alt="HOME" />
-          <span>
-            HOME
-          </span>
+          <span>HOME</span>
         </a>
         <a href="/home">
           <img src="/images/search-icon.svg" alt="HOME" />
-          <span>
-            SEARCH
-          </span>
+          <span>SEARCH</span>
         </a>
         <a href="/home">
           <img src="/images/watchlist-icon.svg" alt="HOME" />
-          <span>
-            WATCHLIST
-          </span>
+          <span>WATCHLIST</span>
         </a>
         <a href="/home">
           <img src="/images/original-icon.svg" alt="HOME" />
-          <span>
-            ORIGINALS
-          </span>
+          <span>ORIGINALS</span>
         </a>
         <a href="/home">
           <img src="/images/movie-icon.svg" alt="HOME" />
-          <span>
-            MOVIES
-          </span>
+          <span>MOVIES</span>
         </a>
         <a href="/home">
           <img src="/images/series-icon.svg" alt="HOME" />
-          <span>
-            SERIES
-          </span>
+          <span>SERIES</span>
         </a>
       </NavMenu>
+      <Login onChange={handleAuth}>Login</Login>
     </Nav>
   );
 };
@@ -99,28 +100,43 @@ const NavMenu = styled.div`
       font-size: 14px;
       white-space: nowrap;
       position: relative;
-      
+
       &:before {
-          content: '';
-          height: 2px;
-          width: 0px;
-          background: white;
-          border-radius: 10px;
-          position: absolute;
-          bottom: -5px;
-          left: 0;
-          transition: 0.2s ease-in-out;
+        content: "";
+        height: 2px;
+        width: 0px;
+        background: white;
+        border-radius: 10px;
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        transition: 0.2s ease-in-out;
       }
       &:hover:before {
-          width: 100%;
-          right: 0;
+        width: 100%;
+        right: 0;
       }
     }
   }
 
   @media (max-width: 768px) {
-        display: none;
-    }
+    display: none;
+  }
 `;
 
+const Login = styled.a`
+  background-color: transparent;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  border: 1px solid #f9f9f9;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #f9f9f9;
+    color: #090b13;
+    cursor: pointer;
+    border-color: transparent;
+  }
+`;
 export default Header;
