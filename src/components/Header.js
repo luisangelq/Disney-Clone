@@ -7,8 +7,8 @@ import {
   selectUserName,
   selectUserPhoto,
   setUserLogin,
+  setUserSignOut
 } from "../features/user/userSlice";
-
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -21,15 +21,18 @@ const Header = (props) => {
       if (user) {
         setUser(user);
         history.push("/home");
+      } else {
+        history.push("/");
       }
-  })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userName, userPhoto]);
 
   // enable google auth
   const handleAuth = () => {
     console.log("Click");
-    auth
+    if(!userName){
+      auth
       .signInWithPopup(provider)
       .then((result) => {
         setUser(result.user);
@@ -37,6 +40,14 @@ const Header = (props) => {
       .catch((error) => {
         console.log(error.message);
       });
+    } else if(userName){
+      auth.signOut().then(() => {
+        dispatch(setUserSignOut());
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    }
+    
   };
 
   const setUser = (user) => {
@@ -84,7 +95,12 @@ const Header = (props) => {
               <span>SERIES</span>
             </a>
           </NavMenu>
-          <UserImg src={userPhoto} alt="User" />
+          <SignOut>
+            <UserImg src={userPhoto} alt="User" />
+            <DropDown>
+              <span onClick={handleAuth}>Sign Out</span>
+            </DropDown>
+          </SignOut>
         </Fragment>
       )}
     </Nav>
@@ -99,7 +115,7 @@ const Nav = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem 2rem;
+  padding: 0.5rem 2rem;
   letter-spacing: 3px;
   z-index: 3;
 `;
@@ -182,8 +198,39 @@ const Login = styled.a`
   }
 `;
 
+
+const DropDown = styled.div`
+  position: absolute;
+  width: 8rem;
+  text-align: center;
+  top: 100%;
+  right: 2rem;
+  background-color: #111111;
+  border: 1px solid #f9f9f9;
+  border-radius: 0.2rem;
+  padding: 1rem;
+  font-size: 14px;
+  letter-spacing: 3px;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  pointer-events: none;
+`;
 const UserImg = styled.img`
   height: 100%;
   border-radius: 100%;
+`;
+
+const SignOut = styled.div`
+  position: relative;
+  height: 3rem;
+  padding-left: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
 `;
 export default Header;
