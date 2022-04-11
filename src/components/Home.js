@@ -1,17 +1,14 @@
 import styled from "styled-components";
 
 import ImgSlider from "./ImgSlider";
+import Viewers from "./Viewers";
 
 const Home = (props) => {
 
     return(
         <Container>
             <ImgSlider />
-            <h1>Hola</h1>
-            <h1>Hola</h1>
-            <h1>Hola</h1>
-            <h1>Hola</h1>
-            <h1>Hola</h1>
+            <Viewers />
         </Container>
     )
 }
@@ -26,6 +23,6 @@ const Container = styled.main`
     background-repeat: no-repeat;
     overflow-x: hidden;
     top: 72px;
-    padding: 0 calc(3.5vw + 5px)  ;
+    padding: 0 calc(3vw + 5px);
 ` 
 export default Home;
