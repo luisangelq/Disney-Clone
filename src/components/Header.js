@@ -7,7 +7,7 @@ import {
   selectUserName,
   selectUserPhoto,
   setUserLogin,
-  setUserSignOut
+  setUserSignOut,
 } from "../features/user/userSlice";
 
 const Header = (props) => {
@@ -18,11 +18,11 @@ const Header = (props) => {
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-        history.push("/home");
-      } else {
+      if (!user) {
         history.push("/");
+      } else {
+        history.push("/home");
+        setUser(user);
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,23 +31,26 @@ const Header = (props) => {
   // enable google auth
   const handleAuth = () => {
     console.log("Click");
-    if(!userName){
+    if (!userName) {
       auth
-      .signInWithPopup(provider)
-      .then((result) => {
-        setUser(result.user);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-    } else if(userName){
-      auth.signOut().then(() => {
-        dispatch(setUserSignOut());
-      }).catch((error) => {
-        console.log(error.message);
-      });
+        .signInWithPopup(provider)
+        .then((result) => {
+          setUser(result.user);
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else if (userName) {
+      auth
+        .signOut()
+        .then(() => {
+          dispatch(setUserSignOut());
+
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     }
-    
   };
 
   const setUser = (user) => {
@@ -197,7 +200,6 @@ const Login = styled.a`
     border-color: transparent;
   }
 `;
-
 
 const DropDown = styled.div`
   position: absolute;

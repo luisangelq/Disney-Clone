@@ -38,7 +38,7 @@ const Viewers = () => {
 };
 
 const Container = styled.div`
-  margin-top: 3rem;
+  margin: 4rem 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 2rem;
